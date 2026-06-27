@@ -1,37 +1,126 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-us">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game</title>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Cluster Rush</title>
+
+    <link href="TemplateData/style.css" rel="stylesheet">
+    <script src="TemplateData/UnityProgress.js"></script>
 
     <style>
         html, body {
             margin: 0;
+            padding: 0;
             width: 100%;
             height: 100%;
             overflow: hidden;
             background: #000;
         }
 
-        iframe {
-            position: fixed;
+        .template {
+            width: 100%;
+            height: 100%;
+        }
+
+        .template-wrap {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        #canvas,
+        #background {
+            position: absolute;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
-            border: none;
+            width: 100%;
+            height: 100%;
+        }
+
+        #canvas {
             display: block;
         }
     </style>
 </head>
-<body>
 
-    <iframe
-        src="https://jasongamesdev.github.io/cluster-rush/"
-        allowfullscreen
-        allow="fullscreen; autoplay; gamepad; clipboard-read; clipboard-write">
-    </iframe>
+<body class="template">
+
+<div class="template-wrap clear">
+
+    <canvas
+        id="canvas"
+        class="emscripten"
+        oncontextmenu="event.preventDefault()">
+    </canvas>
+
+    <div id="background">
+        <div id="screen">
+            <div id="y8-logo"></div>
+
+            <div id="progress-frame-loader">
+                <img id="progress-frame" src="./TemplateData/loadingbar.png">
+            </div>
+
+            <div id="progress-bar-loader">
+                <img id="progress-bar" src="./TemplateData/fullbar.png" width="380">
+            </div>
+
+            <p id="message-area">Preparing...</p>
+        </div>
+    </div>
+
+</div>
+
+<script>
+var Module = {
+    TOTAL_MEMORY: 268435456,
+    errorhandler: null,
+    compatibilitycheck: null,
+    splashScreenStyle: "Dark",
+    backgroundColor: "#231F20",
+    graphicsAPI: [
+        "WebGL 2.0",
+        "WebGL 1.0"
+    ],
+    webglContextAttributes: {
+        preserveDrawingBuffer: false
+    },
+    backgroundUrl: "https://cdn.glitch.me/161fba10-08d4-4007-b3c4-cf3478168729/bg-galaxy3-6.png",
+    dataUrl: "Release/NG.data",
+    codeUrl: "Release/NG.js",
+    asmUrl: "Release/NG.asm.js",
+    memUrl: "Release/NG.mem"
+};
+
+function resizeGame() {
+    const canvas = document.getElementById("canvas");
+    const bg = document.getElementById("background");
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    canvas.style.width = window.innerWidth + "px";
+    canvas.style.height = window.innerHeight + "px";
+
+    bg.style.width = window.innerWidth + "px";
+    bg.style.height = window.innerHeight + "px";
+}
+
+window.addEventListener("load", resizeGame);
+window.addEventListener("resize", resizeGame);
+</script>
+
+<script src="Release/UnityLoader.js"></script>
+
+<script>
+// Optional: Click once to enter browser fullscreen
+window.addEventListener("click", function () {
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+    }
+}, { once: true });
+</script>
 
 </body>
 </html>
